@@ -137,6 +137,11 @@ export function Dashboard() {
 							INVALID CREDENTIALS
 						</span>
 					)}
+					{apiError === "api_unavailable" && (
+						<span className="border border-orange-500/50 bg-orange-500/10 px-2 py-1 text-orange-500 text-xs">
+							API UNAVAILABLE · demo mode
+						</span>
+					)}
 					{!apiError && isDemoMode && (
 						<span className="border border-border bg-muted px-2 py-1 text-muted-foreground text-xs">
 							DEMO MODE

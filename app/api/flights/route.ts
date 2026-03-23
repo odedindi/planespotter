@@ -66,6 +66,7 @@ export async function GET(request: NextRequest) {
 			states: null,
 			time: Date.now() / 1000,
 			demoMode: true,
+			errorCode: "api_unavailable" satisfies ApiErrorCode,
 			error: "Failed to fetch flight data",
 		});
 	}
