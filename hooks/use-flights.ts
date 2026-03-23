@@ -21,30 +21,6 @@ interface RawApiResponse {
 	errorCode?: ApiErrorCode;
 }
 
-// ─── Fetcher ──────────────────────────────────────────────────────────────────
-
-async function fetchFlightsFromApi(
-	settings: UserSettings,
-): Promise<RawApiResponse> {
-	const params = new URLSearchParams({
-		lat: settings.latitude.toString(),
-		lon: settings.longitude.toString(),
-		radius: settings.radiusKm.toString(),
-	});
-
-	const headers: HeadersInit = {};
-	if (settings.apiClientId && settings.apiClientSecret) {
-		headers["x-opensky-client-id"] = settings.apiClientId;
-		headers["x-opensky-client-secret"] = settings.apiClientSecret;
-	}
-
-	const res = await fetch(`/api/flights?${params}`, { headers });
-	if (!res.ok) {
-		throw new Error(`HTTP ${res.status}`);
-	}
-	return res.json();
-}
-
 function parseFlights(
 	raw: (string | number | boolean | null)[][],
 ): FlightData[] {
@@ -80,9 +56,18 @@ function parseFlights(
 export function useFlights(settings: UserSettings | null): FlightState {
 	const setRefreshKey = useSetAtom(refreshKeyAtom);
 
-	// SWR key: changes whenever the fetch-relevant settings change.
-	// Using a stable tuple avoids re-fetching when theme/voice settings change.
-	const swrKey = settings
+	// SWR key: includes every field the fetcher needs.
+	// Stable tuple means theme/voice changes never trigger a refetch.
+	type SwrKey = readonly [
+		"flights",
+		number, // lat
+		number, // lon
+		number, // radiusKm
+		string, // clientId
+		string, // clientSecret
+		number, // pollIntervalSecs
+	];
+	const swrKey: SwrKey | null = settings
 		? ([
 				"flights",
 				settings.latitude,
@@ -90,14 +75,42 @@ export function useFlights(settings: UserSettings | null): FlightState {
 				settings.radiusKm,
 				settings.apiClientId ?? "",
 				settings.apiClientSecret ?? "",
+				settings.pollIntervalSecs ?? 60,
 			] as const)
-		: null; // null suspends SWR until settings are available
+		: null; // null key suspends SWR — fetcher is never called when settings is null
+
+	// Fetcher receives all needed values from the key tuple.
+	// No reference to `settings` — no null-checks or casts required.
+	const fetcher = async ([
+		,
+		lat,
+		lon,
+		radius,
+		clientId,
+		clientSecret,
+	]: SwrKey): Promise<RawApiResponse> => {
+		const params = new URLSearchParams({
+			lat: lat.toString(),
+			lon: lon.toString(),
+			radius: radius.toString(),
+		});
+		const headers: HeadersInit = {};
+		if (clientId && clientSecret) {
+			headers["x-opensky-client-id"] = clientId;
+			headers["x-opensky-client-secret"] = clientSecret;
+		}
+		const res = await fetch(`/api/flights?${params}`, { headers });
+		if (!res.ok) throw new Error(`HTTP ${res.status}`);
+		return res.json();
+	};
+
+	const pollIntervalSecs = settings?.pollIntervalSecs ?? 60;
 
 	const { data, error, isLoading, isValidating } = useSWR<
 		RawApiResponse,
 		Error
-	>(swrKey, () => fetchFlightsFromApi(settings as UserSettings), {
-		refreshInterval: (settings?.pollIntervalSecs ?? 60) * 1000,
+	>(swrKey, fetcher, {
+		refreshInterval: pollIntervalSecs * 1000,
 		// Keep showing stale data while revalidating — critical for the quota/creds error case
 		keepPreviousData: true,
 		// Never revalidate on window focus — this is a live radar, not a blog post
