@@ -248,6 +248,7 @@ export const Radar = memo(function Radar({
 					d="M50,50 L50,5 A45,45 0 0,1 95,50 Z"
 					fill="url(#sweep-gradient-main)"
 					className="radar-sweep"
+					style={{ animationDelay: `-${(Date.now() % 4000) / 1000}s` }}
 				/>
 
 				{/* Planes */}
