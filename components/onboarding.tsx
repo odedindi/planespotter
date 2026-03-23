@@ -123,8 +123,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 	};
 
 	return (
-		<div className="scanlines fixed inset-0 flex items-center justify-center bg-background p-4">
-			<div className="w-full max-w-lg">
+		<div className="scanlines fixed inset-0 flex items-start justify-center overflow-y-auto bg-background px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+			<div className="w-full max-w-lg py-4">
 				{/* Progress Indicator */}
 				<div className="mb-8 flex justify-center gap-2">
 					{[1, 2, 3, 4, 5, 6].map((s) => (
