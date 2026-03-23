@@ -117,9 +117,7 @@ export function Dashboard() {
 			{/* Top Bar */}
 			<header className="flex items-center justify-between border-border border-b bg-card/50 px-4 py-3">
 				<div className="flex items-center gap-3">
-					<h1 className="font-bold text-glow text-lg text-primary">
-						AVIRON
-					</h1>
+					<h1 className="font-bold text-glow text-lg text-primary">AVIRON</h1>
 					<div className="hidden items-center gap-2 text-muted-foreground text-xs sm:flex">
 						<span>
 							{s.latitude.toFixed(2)}, {s.longitude.toFixed(2)}
