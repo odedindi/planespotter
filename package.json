@@ -18,7 +18,7 @@
 		"start": "next start",
 		"lint": "biome lint",
 		"lint:fix": "biome check --write --unsafe",
-		"format": "biome format --write --unsafe",
+		"format": "biome format --write",
 		"check:format": "biome format",
 		"check:types": "tsc --noEmit --incremental",
 		"knip": "knip"
