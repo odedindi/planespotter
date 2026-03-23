@@ -1,6 +1,6 @@
-# ✈️ Planespotter
+# ✈️ Aviron
 
-Real-time plane spotter — see every aircraft flying above you, powered by the [OpenSky Network](https://opensky-network.org/).
+Real-time aviation tracker — see every aircraft flying above you, powered by the [OpenSky Network](https://opensky-network.org/).
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)
@@ -27,8 +27,8 @@ Real-time plane spotter — see every aircraft flying above you, powered by the 
 ### Installation
 
 ```bash
-git clone https://github.com/odedwinberger/planespotter.git
-cd planespotter
+git clone https://github.com/odedindi/aviron.git
+cd aviron
 pnpm install
 ```
 

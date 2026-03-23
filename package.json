@@ -1,10 +1,10 @@
 {
 	"name": "aviron",
 	"version": "0.1.0",
-	"description": "Real-time plane spotter — see every aircraft flying above you, powered by OpenSky Network.",
+	"description": "Real-time aviation tracker — see every aircraft flying above you, powered by OpenSky Network.",
 	"author": "Oded Winberger",
 	"keywords": [
-		"plane-spotter",
+		"aviron",
 		"aviation",
 		"opensky",
 		"real-time",
