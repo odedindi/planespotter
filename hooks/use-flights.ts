@@ -6,7 +6,7 @@ import type { ApiErrorCode, FlightData, UserSettings } from "@/lib/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export interface FlightState {
+interface FlightState {
 	flights: FlightData[];
 	routes: Record<string, { origin: string; destination: string }>;
 	isDemoMode: boolean;

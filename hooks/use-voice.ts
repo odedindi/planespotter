@@ -10,7 +10,7 @@ import {
 	type VoiceSettings,
 } from "@/lib/types";
 
-export interface VoiceOption {
+interface VoiceOption {
 	id: string;
 	name: string;
 	lang: string;
