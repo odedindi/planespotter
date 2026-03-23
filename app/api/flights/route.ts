@@ -1,3 +1,4 @@
+import type { ApiErrorCode } from "@/lib/types";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -39,13 +40,17 @@ export async function GET(request: NextRequest) {
 		});
 
 		if (!response.ok) {
-			// Return demo mode indicator
+			const errorCode: ApiErrorCode =
+				response.status === 429
+					? "quota_exceeded"
+					: response.status === 401
+						? "invalid_credentials"
+						: "api_unavailable";
 			return NextResponse.json({
 				states: null,
 				time: Date.now() / 1000,
 				demoMode: true,
-				error:
-					response.status === 401 ? "Invalid credentials" : "API unavailable",
+				errorCode,
 			});
 		}
 
