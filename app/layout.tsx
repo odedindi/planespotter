@@ -14,7 +14,14 @@ export const metadata: Metadata = {
 	description:
 		"Real-time plane spotter — see every aircraft flying above you. Powered by OpenSky Network.",
 	authors: [{ name: "Oded Winberger" }],
-	keywords: ["plane spotter", "aviation", "aircraft tracking", "opensky", "real-time", "pwa"],
+	keywords: [
+		"plane spotter",
+		"aviation",
+		"aircraft tracking",
+		"opensky",
+		"real-time",
+		"pwa",
+	],
 	manifest: "/manifest.json",
 	appleWebApp: {
 		capable: true,

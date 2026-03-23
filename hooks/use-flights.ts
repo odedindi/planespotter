@@ -1,5 +1,5 @@
-import useSWR from "swr";
 import { useSetAtom } from "jotai";
+import useSWR from "swr";
 import { generateDemoFlights, getDemoRoutes } from "@/lib/demo-data";
 import { refreshKeyAtom } from "@/lib/store";
 import type { ApiErrorCode, FlightData, UserSettings } from "@/lib/types";
@@ -90,20 +90,20 @@ export function useFlights(settings: UserSettings | null): FlightState {
 				settings.radiusKm,
 				settings.apiClientId ?? "",
 				settings.apiClientSecret ?? "",
-		  ] as const)
+			] as const)
 		: null; // null suspends SWR until settings are available
 
 	const { data, error, isLoading, isValidating } = useSWR<
 		RawApiResponse,
 		Error
-	>(swrKey, () => fetchFlightsFromApi(settings!), {
+	>(swrKey, () => fetchFlightsFromApi(settings as UserSettings), {
 		refreshInterval: (settings?.pollIntervalSecs ?? 60) * 1000,
 		// Keep showing stale data while revalidating — critical for the quota/creds error case
 		keepPreviousData: true,
 		// Never revalidate on window focus — this is a live radar, not a blog post
 		revalidateOnFocus: false,
 		// Don't retry on quota/credentials errors — those won't resolve until the user acts
-		onErrorRetry: (err, _key, _config, revalidate, { retryCount }) => {
+		onErrorRetry: (_err, _key, _config, revalidate, { retryCount }) => {
 			// Network/server errors: retry up to 3 times with back-off
 			if (retryCount >= 3) return;
 			setTimeout(() => revalidate({ retryCount }), 5000 * (retryCount + 1));
@@ -118,7 +118,10 @@ export function useFlights(settings: UserSettings | null): FlightState {
 	// Hard quota/auth errors come back as 200 with errorCode in the body
 	const bodyErrorCode = data?.errorCode ?? null;
 
-	if (bodyErrorCode === "quota_exceeded" || bodyErrorCode === "invalid_credentials") {
+	if (
+		bodyErrorCode === "quota_exceeded" ||
+		bodyErrorCode === "invalid_credentials"
+	) {
 		// Keep showing whatever flights were visible before — don't clobber with demo data
 		return {
 			flights: data?.states ? parseFlights(data.states) : [],
@@ -132,7 +135,11 @@ export function useFlights(settings: UserSettings | null): FlightState {
 	// Network/fetch error (thrown by fetcher) — fall back to demo
 	if (error && !data) {
 		const demoFlights = settings
-			? generateDemoFlights(settings.latitude, settings.longitude, settings.radiusKm)
+			? generateDemoFlights(
+					settings.latitude,
+					settings.longitude,
+					settings.radiusKm,
+				)
 			: [];
 		return {
 			flights: demoFlights,
@@ -147,10 +154,20 @@ export function useFlights(settings: UserSettings | null): FlightState {
 	if (!data || data.demoMode || !data.states || data.states.length === 0) {
 		// Don't show demo data if we're still loading for the first time
 		if (isLoading && !data) {
-			return { flights: [], routes: {}, isDemoMode: false, apiError: null, isLoading: true };
+			return {
+				flights: [],
+				routes: {},
+				isDemoMode: false,
+				apiError: null,
+				isLoading: true,
+			};
 		}
 		const demoFlights = settings
-			? generateDemoFlights(settings.latitude, settings.longitude, settings.radiusKm)
+			? generateDemoFlights(
+					settings.latitude,
+					settings.longitude,
+					settings.radiusKm,
+				)
 			: [];
 		return {
 			flights: demoFlights,

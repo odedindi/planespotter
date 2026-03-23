@@ -1,4 +1,7 @@
-export type ApiErrorCode = "quota_exceeded" | "invalid_credentials" | "api_unavailable";
+export type ApiErrorCode =
+	| "quota_exceeded"
+	| "invalid_credentials"
+	| "api_unavailable";
 
 export interface FlightData {
 	icao24: string;

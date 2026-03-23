@@ -36,7 +36,10 @@ interface SettingsModalProps {
 	onSave: (settings: UserSettings) => void;
 }
 
-export const SettingsModal = memo(function SettingsModal({ settings, onSave }: SettingsModalProps) {
+export const SettingsModal = memo(function SettingsModal({
+	settings,
+	onSave,
+}: SettingsModalProps) {
 	const [open, setOpen] = useState(false);
 	const [radiusKm, setRadiusKm] = useState(settings.radiusKm);
 	const [pollIntervalSecs, setPollIntervalSecs] = useState(
@@ -188,7 +191,9 @@ export const SettingsModal = memo(function SettingsModal({ settings, onSave }: S
 
 					{/* Poll Interval */}
 					<div className="space-y-3">
-						<Label className="text-muted-foreground text-sm">POLL INTERVAL</Label>
+						<Label className="text-muted-foreground text-sm">
+							POLL INTERVAL
+						</Label>
 						<div className="flex gap-2">
 							{([30, 60, 120] as const).map((secs) => (
 								<Button
@@ -459,12 +464,12 @@ export const SettingsModal = memo(function SettingsModal({ settings, onSave }: S
 							onChange={(e) => setApiClientSecret(e.target.value)}
 							className="border-border bg-input text-foreground placeholder:text-muted-foreground"
 						/>
-					<p className="text-muted-foreground text-xs">
-						Get free credentials at opensky-network.org
-					</p>
-					<p className="text-muted-foreground text-xs">
-						Credentials are stored locally in your browser only.
-					</p>
+						<p className="text-muted-foreground text-xs">
+							Get free credentials at opensky-network.org
+						</p>
+						<p className="text-muted-foreground text-xs">
+							Credentials are stored locally in your browser only.
+						</p>
 					</div>
 
 					{/* Location Info */}

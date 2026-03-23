@@ -117,7 +117,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 				voiceSettings,
 				onboardingComplete: true,
 				units: "metric",
-			pollIntervalSecs: 60,
+				pollIntervalSecs: 60,
 			});
 		}, 2500);
 	};
@@ -448,12 +448,12 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 							</div>
 						</div>
 
-					<p className="text-center text-muted-foreground text-xs">
-						Without credentials: 100 requests/day limit
-					</p>
-					<p className="text-center text-muted-foreground text-xs">
-						Credentials are stored locally in your browser only.
-					</p>
+						<p className="text-center text-muted-foreground text-xs">
+							Without credentials: 100 requests/day limit
+						</p>
+						<p className="text-center text-muted-foreground text-xs">
+							Credentials are stored locally in your browser only.
+						</p>
 
 						<div className="flex gap-4">
 							<Button
@@ -624,7 +624,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
 						<div className="flex justify-center">
 							<div className="relative h-64 w-64">
-						<RadarLoader title="Radar Screen" />
+								<RadarLoader title="Radar Screen" />
 							</div>
 						</div>
 

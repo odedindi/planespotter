@@ -1,16 +1,16 @@
 "use client";
 
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useVoice } from "@/hooks/use-voice";
 import { useFlights } from "@/hooks/use-flights";
+import { useVoice } from "@/hooks/use-voice";
 import { refreshKeyAtom, selectedFlightAtom, settingsAtom } from "@/lib/store";
+import type { Stats, UserSettings, VoiceSettings } from "@/lib/types";
 import {
 	calculateDistance,
 	getDefaultVoiceSettings,
 	OVERHEAD_THRESHOLD,
 } from "@/lib/types";
-import type { Stats, UserSettings, VoiceSettings } from "@/lib/types";
 import { FlightCards } from "./flight-cards";
 import { FlightDetailPanel } from "./flight-detail-panel";
 import { Radar } from "./radar";
@@ -176,7 +176,9 @@ export function Dashboard() {
 							});
 						}}
 						className={`border p-1.5 ${voiceSettings.enabled ? "border-primary text-primary" : "border-muted-foreground text-muted-foreground"}`}
-						title={voiceSettings.enabled ? "Voice alerts on" : "Voice alerts off"}
+						title={
+							voiceSettings.enabled ? "Voice alerts on" : "Voice alerts off"
+						}
 					>
 						<svg
 							className="h-4 w-4"
