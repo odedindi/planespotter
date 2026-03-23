@@ -267,7 +267,7 @@ export const VOICE_TRANSLATIONS: Record<
 };
 
 // Major airline ICAO prefixes
-export const AIRLINE_MAP: Record<string, string> = {
+const AIRLINE_MAP: Record<string, string> = {
 	// Israeli
 	LY: "El Al",
 	IZ: "Arkia",
